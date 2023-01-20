@@ -99,16 +99,53 @@ select * from Time;
 
 
 
---Inserção dos Jogadores
-insert into db_copadonordeste.Time (idtime, nome, idcidade)
-values
-(01, 'Fortaleza', 01),
-(02, 'América', 02),
-(03, 'Fluminese', 03),
-(04, 'Sport', 04),
-(05, 'Treze FC', 05),
-(06, 'Sampaio Correia', 06),
-(07, 'CRB', 07),
-(08, 'Confiança', 08),
-(09, 'Vitória', 09);
 
+--Inserção dos Jogadores
+insert into db_copadonordeste.Jogadores (idjogador, nome, idtime, idade)
+values
+(01, 'Benzema', 01, 36),
+(02, 'Sadio', 01, 29),
+(03, 'Bruyne', 02, 46),
+(04, 'Lewandowski', 02, 20),
+(05, 'Mohamed Salah', 03, 18),
+(06, 'Kylian Mbappé', 03, 36),
+(07, 'Thibaut Courtois', 04, 50),
+(08, 'Vini Jr', 04, 19),
+(09, 'Luka Modric', 05, 39),
+(10, 'Erling Haaland', 05, 32),
+(11, 'Cristiano Ronaldo', 06, 32),
+(12, 'Casemiro ', 06, 36),
+(13, 'Sébastien Haller', 07, 25),
+(14, 'Joshua Kimmich', 07, 24),
+(15, 'Lionel Messi', 08, 23),
+(16, 'Riyad Mahrez', 08, 25),
+(17, 'Virgil van Dijk', 09, 22),
+(18, 'Trent Alexander-Arnold', 09, 20);
+
+select * from jogadores;
+
+--Inserção dos Jogos
+insert into db_copadonordeste.Jogos (idjogo, idtime1, idtime2, golstime1, golstime2)
+values
+(01, 01, 02, 3, 1),
+(02, 01, 03, 1, 1),
+(03, 01, 04, 2, 2),
+(04, 01, 05, 3, 1),
+(05, 01, 06, 1, 2),
+(06, 01, 07, 2, 1),
+(07, 02, 03, 7, 1),
+(08, 01, 04, 1, 2),
+(09, 01, 05, 1, 1),
+(10, 01, 06, 1, 1),
+(11, 01, 07, 3, 2);
+
+select * from db_copadonordeste.Jogos;
+
+-------------------------------------------------------------------------------------
+--Perguntas
+--○ Quantos jogos cada jogador jogou?
+--○ Qual time mais venceu partidas?
+--○ Qual time é o lanterna?
+--○ Qual time teve a melhor defesa?
+--○ Qual dado você achou relevante ? O que você descobriu?
+-------------------------------------------------------------------------------------
