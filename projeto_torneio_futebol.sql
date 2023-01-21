@@ -46,9 +46,7 @@ create table db_copadonordeste.Jogos(
 	golstime1 integer,
 	golstime2 integer,
 	foreign key (idtime1) references db_copadonordeste.Time(idtime),
-	foreign key (idtime2) references db_copadonordeste.Time(idtime),
-	foreign key (golstime1) references db_copadonordeste.Jogadores(idjogador),
-	foreign key (golstime2) references db_copadonordeste.Jogadores(idjogador)
+	foreign key (idtime2) references db_copadonordeste.Time(idtime)
 );
 
 -- Inserção dos estados do nordeste
@@ -122,30 +120,73 @@ values
 (17, 'Virgil van Dijk', 09, 22),
 (18, 'Trent Alexander-Arnold', 09, 20);
 
-select * from jogadores;
+select * from Jogadores;
 
 --Inserção dos Jogos
-insert into db_copadonordeste.Jogos (idjogo, idtime1, idtime2, golstime1, golstime2)
+insert into db_copadonordeste.Jogos (idjogo, idtime1, idtime2, data_2, golstime1, golstime2)
 values
-(01, 01, 02, 3, 1),
-(02, 01, 03, 1, 1),
-(03, 01, 04, 2, 2),
-(04, 01, 05, 3, 1),
-(05, 01, 06, 1, 2),
-(06, 01, 07, 2, 1),
-(07, 02, 03, 7, 1),
-(08, 01, 04, 1, 2),
-(09, 01, 05, 1, 1),
-(10, 01, 06, 1, 1),
-(11, 01, 07, 3, 2);
+(01, 01, 02,'2023-01-01 12:00:00', 3, 1),
+(02, 01, 03,'2023-01-02 12:00:00', 1, 1),
+(03, 01, 04,'2023-01-03 12:00:00', 2, 2),
+(04, 01, 05,'2023-01-04 12:00:00', 3, 1),
+(05, 01, 06,'2023-01-05 12:00:00', 1, 2),
+(06, 01, 07,'2023-01-06 12:00:00', 2, 1),
+(07, 02, 03,'2023-01-07 12:00:00', 7, 1),
+(08, 01, 04,'2023-01-08 12:00:00', 1, 2),
+(09, 01, 05,'2023-01-09 12:00:00', 1, 1),
+(10, 01, 06,'2023-01-10 12:00:00', 1, 1),
+(11, 01, 07,'2023-01-11 12:00:00', 3, 2);
 
 select * from db_copadonordeste.Jogos;
 
 -------------------------------------------------------------------------------------
 --Perguntas
+
+
+
+
 --○ Quantos jogos cada jogador jogou?
+select jogadores.nome_jogador, count(distinct partidas.idjogo) as partidas_disputadas
+from jogos
+join jogos.time on jogadores.idtime = time.id
+join jogos.partidas on time.id = partidas.idtime1 or time.id = partidas.idtime2
+group by jogadores.nome_jogador
+order by partidas_disputadas desc;
+
+
+
 --○ Qual time mais venceu partidas?
---○ Qual time é o lanterna?
+select
+	times.nome as "time",
+	vencedores.total_vitorias
+from (
+	select 
+		count(*) as total_vitorias,
+		CASE 
+			WHEN gols_time_1 > gols_time_2 THEN id_time_1
+		    WHEN gols_time_1 = gols_time_2 THEN null
+		    ELSE id_time_2
+		END AS vencedor
+	FROM jogos 
+	group by vencedor
+) as vencedores inner join times 
+on vencedores.vencedor = times.id
+group by vencedores.total_vitorias, times.nome
+order by vencedores.total_vitorias desc;
+
+
 --○ Qual time teve a melhor defesa?
---○ Qual dado você achou relevante ? O que você descobriu?
+select 
+  time, 
+  sum(case when idtime1 = id then golstime2 else golstime1 end) as total_goals_sofridos
+from jogos
+join jogos.time
+on jogos.partidas.idtime1 = jogos.time.id or jogos.partidas.idtime2 = jogos.time.id
+group by time
+order by total_goals_sofridos asc;
+
+
 -------------------------------------------------------------------------------------
+
+
+
